@@ -16,7 +16,15 @@ class PosterListSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text((title != null) ? title : "Not Defined"),
+        Container(
+          margin: EdgeInsets.only(left: 8.0),
+          child: Text(
+            (title != null) ? title : "Not Defined",
+            style: TextStyle(
+              fontSize: 18.0,
+            ),
+          ),
+        ),
         Container(
           height: (height != null) ? height : 200.0,
           child: (items.isNotEmpty) ? _buildPosterList() : _buildEmptyList(),
@@ -27,7 +35,7 @@ class PosterListSection extends StatelessWidget {
 
   Widget _buildPosterList() {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       physics: ClampingScrollPhysics(),
       scrollDirection: Axis.horizontal,
       itemCount: items.length,

@@ -20,31 +20,6 @@ class MovieScreenState extends State<MovieScreen> {
   var queryParameters = {
     'api_key': "2987da0f3538bdb63ed97b29c1571587",
   };
-  Future<MovieResponse> fetchNowPlayingMovies() async {
-    var uri = Uri.https(url, '/3/movie/now_playing', queryParameters);
-    final response = await http.get(
-      uri,
-      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load post ${response.statusCode}');
-    }
-  }
-
-  Future<MovieResponse> fetchPopulargMovies() async {
-    var uri = Uri.https(url, '/3/movie/popular', queryParameters);
-    final response = await http.get(
-      uri,
-      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load post ${response.statusCode}');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +28,13 @@ class MovieScreenState extends State<MovieScreen> {
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildListDelegate([
-              PosterListSection(
-                title: 'Popular Movie',
+              Container(
                 height: 200.0,
-                items: [],
               ),
               _buildDataList('Now Playing', fetchNowPlayingMovies()),
-              _buildDataList('Popular', fetchPopulargMovies()),
-              _buildDataList('Now Playing', fetchNowPlayingMovies()),
-              _buildDataList('Now Playing', fetchNowPlayingMovies()),
+              _buildDataList('Popular', fetchPopularMovies()),
+              _buildDataList('Upcoming', fetchUpcomingMovies()),
+              _buildDataList('Top Rated', fetchTopRatedMovies()),
             ]),
           )
         ],
@@ -90,5 +63,57 @@ class MovieScreenState extends State<MovieScreen> {
         );
       },
     );
+  }
+
+  Future<MovieResponse> fetchNowPlayingMovies() async {
+    var uri = Uri.https(url, '/3/movie/now_playing', queryParameters);
+    final response = await http.get(
+      uri,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return MovieResponse.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load post ${response.statusCode}');
+    }
+  }
+
+  Future<MovieResponse> fetchPopularMovies() async {
+    var uri = Uri.https(url, '/3/movie/popular', queryParameters);
+    final response = await http.get(
+      uri,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return MovieResponse.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load post ${response.statusCode}');
+    }
+  }
+
+  Future<MovieResponse> fetchUpcomingMovies() async {
+    var uri = Uri.https(url, '/3/movie/upcoming', queryParameters);
+    final response = await http.get(
+      uri,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return MovieResponse.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load post ${response.statusCode}');
+    }
+  }
+
+  Future<MovieResponse> fetchTopRatedMovies() async {
+    var uri = Uri.https(url, '/3/movie/top_rated', queryParameters);
+    final response = await http.get(
+      uri,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return MovieResponse.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load post ${response.statusCode}');
+    }
   }
 }

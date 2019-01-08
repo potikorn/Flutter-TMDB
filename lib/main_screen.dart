@@ -10,19 +10,20 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  
   int _currentIndex = 0;
   final List<Widget> _children = [
     MovieScreen(),
-    MovieScreen(),
-    MovieScreen(),
+    Container(
+      child: Center(
+        child: Text('Search'),
+      ),
+    ),
+    Container(
+      child: Center(
+        child: Text('Settings'),
+      ),
+    ),
   ];
-
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +38,19 @@ class MainScreenState extends State<MainScreen> {
             title: new Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.mail),
-            title: new Text('Messages'),
+            icon: new Icon(Icons.search),
+            title: new Text('Search'),
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.person), title: Text('Profile'))
         ],
       ),
     );
+  }
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }
