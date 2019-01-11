@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_db/dao/video_response.dart';
 import 'package:http/http.dart' as http;
 import '../../widget/circular_icon.dart';
 import '../../widget/similar_and_trailer_view.dart';
@@ -106,7 +107,8 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
                   ),
                   SimilarAndTrailerTabView(
-                    futureSimilarData: fetchMovieSimilar(),
+                    futureSimilarData: fetchMovieSimilar(), 
+                    futureVideos: fetchMovieVideos(),
                   )
                 ],
               ),
@@ -230,6 +232,20 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
     );
     if (response.statusCode == 200) {
       return MovieResponse.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load post ${response.statusCode}');
+    }
+  }
+
+  Future<VideoResponse> fetchMovieVideos() async {
+    var uri =
+        Uri.https(url, '/3/movie/${widget.data.id}/videos', queryParameters);
+    final response = await http.get(
+      uri,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return VideoResponse.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load post ${response.statusCode}');
     }

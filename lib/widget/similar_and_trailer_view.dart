@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import '../movie/screen/movie_detail_screen.dart';
+import 'package:flutter_movie_db/widget/poster_view.dart';
+import 'package:flutter_youtube/flutter_youtube.dart';
 
 import '../dao/movie_response.dart';
+import 'package:flutter_movie_db/dao/video_response.dart';
 
 class SimilarAndTrailerTabView extends StatefulWidget {
   final Future<MovieResponse> futureSimilarData;
+  final Future<VideoResponse> futureVideos;
 
   SimilarAndTrailerTabView({
     Key key,
     @required this.futureSimilarData,
+    @required this.futureVideos,
   }) : super(key: key);
 
   @override
@@ -91,32 +95,45 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
 
   Widget _buildSimilarGrid(List<MovieDetails> movieDetails) {
     return GridView.builder(
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        itemCount: (movieDetails.length > 12) ? 12 : movieDetails.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, childAspectRatio: 2 / 3),
+        itemBuilder: (BuildContext context, int index) =>
+            PosterView(item: movieDetails[index]));
+  }
+
+  Widget _buildTrailersView() {
+    return FutureBuilder(
+      future: widget.futureVideos,
+      builder: (BuildContext context, AsyncSnapshot<VideoResponse> snapshot) {
+        if (snapshot.hasData)
+          return _buildVideoTrailer(snapshot.data.results);
+        else
+          return Container();
+      },
+    );
+  }
+
+  Widget _buildVideoTrailer(List<Video> results) {
+    return ListView.builder(
+      padding: EdgeInsets.all(8.0),
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: (movieDetails.length > 12) ? 12 : movieDetails.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, childAspectRatio: 2 / 3),
+      itemCount: results.length,
       itemBuilder: (BuildContext context, int index) {
         return AspectRatio(
-          aspectRatio: 2 / 3,
+          aspectRatio: 16 / 9,
           child: GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MovieDetailScreen(
-                          data: movieDetails[index],
-                        )),
-              );
+              _openYoutubeVideo(results[index].key);
             },
             child: Card(
-              elevation: 6.0,
               child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          "https://image.tmdb.org/t/p/w500/${movieDetails[index].posterPath}"),
-                      fit: BoxFit.cover),
+                decoration: BoxDecoration(color: Colors.grey),
+                child: Center(
+                  child: Text(results[index].name),
                 ),
               ),
             ),
@@ -126,9 +143,10 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
     );
   }
 
-  Widget _buildTrailersView() {
-    return Container(
-      child: Text('1'),
+  _openYoutubeVideo(String key) {
+    return FlutterYoutube.playYoutubeVideoById(
+      apiKey: "AIzaSyD2aa7VZe5y_W9KnByvUFzRAr5-VuePTng",
+      videoId: key,
     );
   }
 
