@@ -23,8 +23,10 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
     return Column(
       children: <Widget>[
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[_buildTab(0, "Similar"), _buildTab(1, "Trailer")],
+          children: <Widget>[
+            _buildTab(0, "Similar"),
+            _buildTab(1, "Trailer"),
+          ],
         ),
         (_currentTab == 0)
             ? _buildSimilarView(widget.futureSimilarData)
@@ -91,7 +93,7 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
     return GridView.builder(
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: 12,
+      itemCount: (movieDetails.length > 12) ? 12 : movieDetails.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, childAspectRatio: 2 / 3),
       itemBuilder: (BuildContext context, int index) {
