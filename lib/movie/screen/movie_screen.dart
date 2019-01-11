@@ -27,16 +27,18 @@ class MovieScreenState extends State<MovieScreen> {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverList(
-            delegate: SliverChildListDelegate([
-              Container(
-                height: 200.0,
-              ),
-              _buildDataList('Now Playing', fetchNowPlayingMovies()),
-              _buildDataList('Popular', fetchPopularMovies()),
-              _buildDataList('Upcoming', fetchUpcomingMovies()),
-              _buildDataList('Top Rated', fetchTopRatedMovies()),
-            ]),
-          )
+            delegate: SliverChildListDelegate(
+              [
+                Container(
+                  height: 200.0,
+                ),
+                _buildDataList('Now Playing', fetchNowPlayingMovies()),
+                _buildDataList('Popular', fetchPopularMovies()),
+                _buildDataList('Upcoming', fetchUpcomingMovies()),
+                _buildDataList('Top Rated', fetchTopRatedMovies()),
+              ],
+            ),
+          ),
         ],
       ),
     );
