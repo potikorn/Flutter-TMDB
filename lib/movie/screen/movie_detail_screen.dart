@@ -6,6 +6,7 @@ import 'package:flutter_movie_db/dao/video_response.dart';
 import 'package:http/http.dart' as http;
 import '../../widget/circular_icon.dart';
 import '../../widget/similar_and_trailer_view.dart';
+import '../../widget/top_backdrop.dart';
 
 import '../../dao/movie_response.dart';
 import '../../dao/credits_response.dart';
@@ -28,6 +29,20 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
     'api_key': "2987da0f3538bdb63ed97b29c1571587",
   };
 
+  Future<MovieResponse> similarMovies;
+  Future<MovieDetails> movieDetail;
+  Future<VideoResponse> movieVideos;
+  Future<CreditsResponse> credits;
+
+  @override
+  void initState() {
+    super.initState();
+    similarMovies = fetchMovieSimilar();
+    movieDetail = fetchMovieDetail();
+    movieVideos = fetchMovieVideos();
+    credits = fetchCrews();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,14 +51,12 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              expandedHeight: 200.0,
+              expandedHeight: 250.0,
               floating: false,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                background: Image.network(
-                  "https://image.tmdb.org/t/p/w500/${widget.data.backDropPath}",
-                  fit: BoxFit.cover,
-                ),
+                collapseMode: CollapseMode.parallax,
+                background: TopBackDrop(movieDetail: widget.data),
               ),
             ),
             SliverList(
@@ -82,7 +95,7 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         FutureBuilder(
-                          future: fetchMovieDetail(),
+                          future: movieDetail,
                           builder:
                               (context, AsyncSnapshot<MovieDetails> snapshot) {
                             if (snapshot.hasData) {
@@ -93,7 +106,7 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
                           },
                         ),
                         FutureBuilder(
-                          future: fetchCrews(),
+                          future: credits,
                           builder: (context,
                               AsyncSnapshot<CreditsResponse> snapshot) {
                             if (snapshot.hasData) {
@@ -107,8 +120,8 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
                   ),
                   SimilarAndTrailerTabView(
-                    futureSimilarData: fetchMovieSimilar(), 
-                    futureVideos: fetchMovieVideos(),
+                    futureSimilarData: similarMovies,
+                    futureVideos: movieVideos,
                   )
                 ],
               ),
@@ -121,8 +134,8 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
 
   Widget _buildTitleAndOverview(MovieDetails details) {
     final releaseDate = details.releaseDate.split('-').first;
-    final runTimeHours = details.runtime ~/ 60;
-    final runTimeMinute = details.runtime % 60;
+    final runTimeHours = details.runtime ?? 0 ~/ 60;
+    final runTimeMinute = details.runtime ?? 0 % 60;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
