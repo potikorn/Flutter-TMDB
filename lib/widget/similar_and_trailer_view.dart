@@ -43,7 +43,7 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          _nTabSelected(currentTab);
+          _onTabSelected(currentTab);
         },
         child: Container(
           decoration: BoxDecoration(color: Colors.transparent),
@@ -84,8 +84,17 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
       future: futureSimilarData,
       builder: (BuildContext context, AsyncSnapshot<MovieResponse> snapshot) {
         if (snapshot.hasData) {
-          return _buildSimilarGrid(
-              snapshot.data.movieDetails.take(12).toList());
+          if (snapshot.data.movieDetails.isNotEmpty) {
+            return _buildSimilarGrid(
+                snapshot.data.movieDetails.take(12).toList());
+          } else  {
+            return Container(
+              height: 200.0,
+              child: Center(
+                child: Text('No related movies'),
+              ),
+            );
+          }
         } else {
           return Container();
         }
@@ -145,12 +154,13 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
 
   _openYoutubeVideo(String key) {
     return FlutterYoutube.playYoutubeVideoById(
-      apiKey: "AIzaSyD2aa7VZe5y_W9KnByvUFzRAr5-VuePTng",
-      videoId: key,
-    );
+        apiKey: "AIzaSyD2aa7VZe5y_W9KnByvUFzRAr5-VuePTng",
+        videoId: key,
+        autoPlay: true,
+        fullScreen: true);
   }
 
-  void _nTabSelected(int currentTab) {
+  void _onTabSelected(int currentTab) {
     if (_currentTab == currentTab) return;
     setState(() {
       _currentTab = currentTab;
