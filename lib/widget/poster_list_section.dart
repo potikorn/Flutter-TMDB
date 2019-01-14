@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'poster_view.dart';
 
 import '../dao/movie_response.dart' show MovieDetails;
 
@@ -9,10 +10,10 @@ class PosterListSection extends StatelessWidget {
 
   PosterListSection({Key key, this.title, this.height, @required this.items})
       : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
-    // print(items);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -40,24 +41,7 @@ class PosterListSection extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       itemCount: items.length,
       itemBuilder: (BuildContext context, int index) {
-        return AspectRatio(
-          aspectRatio: 2 / 3,
-          child: Card(
-            // margin: EdgeInsets.all(8.0),
-            elevation: 6.0,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(
-                        "https://image.tmdb.org/t/p/w500/${items[index].posterPath}"),
-                    fit: BoxFit.cover),
-              ),
-              child: Center(
-                child: Text('${items[index].title}'),
-              ),
-            ),
-          ),
-        );
+        return PosterView(item: items[index]);
       },
     );
   }

@@ -35,7 +35,8 @@ MovieDetails _$MovieDetailsFromJson(Map<String, dynamic> json) {
       overView: json['overview'] as String,
       releaseDate: json['release_date'] as String,
       backDropPath: json['backdrop_path'] as String,
-      popularity: (json['popularity'] as num)?.toDouble());
+      popularity: (json['popularity'] as num)?.toDouble(),
+      runtime: json['runtime'] as int);
 }
 
 Map<String, dynamic> _$MovieDetailsToJson(MovieDetails instance) =>
@@ -47,5 +48,6 @@ Map<String, dynamic> _$MovieDetailsToJson(MovieDetails instance) =>
       'overview': instance.overView,
       'release_date': instance.releaseDate,
       'backdrop_path': instance.backDropPath,
-      'popularity': instance.popularity
+      'popularity': instance.popularity,
+      'runtime': instance.runtime
     };

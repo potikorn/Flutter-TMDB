@@ -37,6 +37,7 @@ class MovieDetails extends Object {
   @JsonKey(name: 'backdrop_path')
   String backDropPath;
   double popularity;
+  int runtime;
 
   MovieDetails({
     this.id,
@@ -47,6 +48,7 @@ class MovieDetails extends Object {
     this.releaseDate,
     this.backDropPath,
     this.popularity,
+    this.runtime
   });
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) =>
