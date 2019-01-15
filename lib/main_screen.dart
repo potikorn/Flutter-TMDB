@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'movie/screen/movie_screen.dart';
+import 'package:flutter_movie_db/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -9,15 +10,12 @@ class MainScreen extends StatefulWidget {
   }
 }
 
-class MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen>
+    with AutomaticKeepAliveClientMixin {
   int _currentIndex = 0;
   final List<Widget> _children = [
     MovieScreen(),
-    Container(
-      child: Center(
-        child: Text('Search'),
-      ),
-    ),
+    SearchScreen(),
     Container(
       child: Center(
         child: Text('Settings'),
@@ -31,6 +29,7 @@ class MainScreenState extends State<MainScreen> {
       body: _children[_currentIndex],
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
+          canvasColor: Colors.grey[900],
           textTheme: Theme.of(context)
               .textTheme
               .copyWith(caption: TextStyle(color: Colors.grey)),
@@ -63,4 +62,7 @@ class MainScreenState extends State<MainScreen> {
       _currentIndex = index;
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

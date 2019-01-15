@@ -34,7 +34,7 @@ class TopBackDrop extends StatelessWidget {
                   end: FractionalOffset.bottomCenter,
                   colors: [
                     Colors.grey.withOpacity(0.0),
-                    Colors.grey[900],
+                    Colors.grey[850],
                   ],
                   stops: [0.0, 1.0],
                 ),

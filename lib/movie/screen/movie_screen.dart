@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/movie/screen/movie_detail_screen.dart';
+import 'package:flutter_movie_db/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 import '../../dao/movie_response.dart';
@@ -18,10 +19,9 @@ class MovieScreen extends StatefulWidget {
 }
 
 class MovieScreenState extends State<MovieScreen> {
-  var url = "api.themoviedb.org";
-  // var apiToken = "2987da0f3538bdb63ed97b29c1571587";
+  var url = BASE_URL;
   var queryParameters = {
-    'api_key': "2987da0f3538bdb63ed97b29c1571587",
+    'api_key': API_KEY,
   };
   final randomNumber = 0 + Random().nextInt(9 - 0);
   Future<MovieResponse> nowPlaying;
@@ -150,14 +150,12 @@ class MovieScreenState extends State<MovieScreen> {
   }
 
   Future<MovieResponse> fetchNowPlayingMovies() async {
-    print('Enter THIS');
     var uri = Uri.https(url, '/3/movie/now_playing', queryParameters);
     final response = await http.get(
       uri,
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     );
     if (response.statusCode == 200) {
-      print('Enter THIS getting response');
       return MovieResponse.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load post ${response.statusCode}');
