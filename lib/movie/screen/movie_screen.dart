@@ -136,19 +136,6 @@ class MovieScreenState extends State<MovieScreen> {
     );
   }
 
-  Future<MovieDetails> fetchLatest() async {
-    var uri = Uri.https(url, '/3/movie/latest', queryParameters);
-    final response = await http.get(
-      uri,
-      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      return MovieDetails.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load post ${response.statusCode}');
-    }
-  }
-
   Future<MovieResponse> fetchNowPlayingMovies() async {
     var uri = Uri.https(url, '/3/movie/now_playing', queryParameters);
     final response = await http.get(
@@ -169,7 +156,9 @@ class MovieScreenState extends State<MovieScreen> {
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     );
     if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body));
+      var movieResponse = MovieResponse.fromJson(json.decode(response.body));
+      movieResponse.movieDetails.shuffle();
+      return movieResponse;
     } else {
       throw Exception('Failed to load post ${response.statusCode}');
     }
@@ -182,7 +171,9 @@ class MovieScreenState extends State<MovieScreen> {
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     );
     if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body));
+      var upcomingMovie = MovieResponse.fromJson(json.decode(response.body));
+      upcomingMovie.movieDetails.shuffle();
+      return upcomingMovie;
     } else {
       throw Exception('Failed to load post ${response.statusCode}');
     }
