@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_db/movie/screen/movie_detail_screen.dart';
 import 'package:http/http.dart' as http;
 
 import '../../dao/movie_response.dart';
@@ -80,9 +81,19 @@ class MovieScreenState extends State<MovieScreen> {
               final randomMovie = snapshot.data.movieDetails[randomNumber];
               return Column(
                 children: <Widget>[
-                  TopBackDrop(
-                    movieDetail: randomMovie,
-                    isShowTitle: true,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return MovieDetailScreen(data: randomMovie);
+                        }),
+                      );
+                    },
+                    child: TopBackDrop(
+                      movieDetail: randomMovie,
+                      isShowTitle: true,
+                    ),
                   ),
                   PosterListSection(
                     title: "Now playing",

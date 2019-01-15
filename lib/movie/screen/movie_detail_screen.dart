@@ -134,8 +134,8 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
 
   Widget _buildTitleAndOverview(MovieDetails details) {
     final releaseDate = details.releaseDate.split('-').first;
-    final runTimeHours = details.runtime ?? 0 ~/ 60;
-    final runTimeMinute = details.runtime ?? 0 % 60;
+    final runTimeHours = (details.runtime ?? 0) ~/ 60;
+    final runTimeMinute = (details.runtime ?? 0) % 60;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
