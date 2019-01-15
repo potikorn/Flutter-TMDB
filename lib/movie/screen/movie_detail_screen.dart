@@ -46,7 +46,6 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
@@ -62,33 +61,34 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircularIcon(
-                          icon: Icons.list,
-                          radius: 45.0,
-                        ),
-                        SizedBox(width: 10.0),
-                        CircularIcon(
-                          icon: Icons.favorite_border,
-                          radius: 45.0,
-                        ),
-                        SizedBox(width: 10.0),
-                        CircularIcon(
-                          icon: Icons.bookmark_border,
-                          radius: 45.0,
-                        ),
-                        SizedBox(width: 10.0),
-                        CircularIcon(
-                          icon: Icons.star_border,
-                          radius: 45.0,
-                        ),
-                      ],
-                    ),
-                  ),
+                  // FIXME Show when ready 
+                  // Container(
+                  //   margin: EdgeInsets.symmetric(vertical: 16.0),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: <Widget>[
+                  //       CircularIcon(
+                  //         icon: Icons.list,
+                  //         radius: 45.0,
+                  //       ),
+                  //       SizedBox(width: 10.0),
+                  //       CircularIcon(
+                  //         icon: Icons.favorite_border,
+                  //         radius: 45.0,
+                  //       ),
+                  //       SizedBox(width: 10.0),
+                  //       CircularIcon(
+                  //         icon: Icons.bookmark_border,
+                  //         radius: 45.0,
+                  //       ),
+                  //       SizedBox(width: 10.0),
+                  //       CircularIcon(
+                  //         icon: Icons.star_border,
+                  //         radius: 45.0,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(

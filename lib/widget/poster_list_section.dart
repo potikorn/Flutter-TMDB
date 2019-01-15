@@ -18,7 +18,7 @@ class PosterListSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(left: 8.0),
+          margin: EdgeInsets.only(left: 12.0),
           child: Text(
             (title != null) ? title : "Not Defined",
             style: TextStyle(

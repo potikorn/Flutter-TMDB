@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
                 bodyColor: Colors.white,
               ),
           primarySwatch: Colors.grey,
-          primaryColor: Colors.grey[900],
-          canvasColor: Colors.grey[900],
+          primaryColor: Colors.grey[850],
+          canvasColor: Colors.grey[850],
         ),
         home: MainScreen());
   }

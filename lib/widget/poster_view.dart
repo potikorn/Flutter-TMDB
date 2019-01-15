@@ -20,14 +20,24 @@ class PosterView extends StatelessWidget {
             ),
           );
         },
-        child: Card(
-          elevation: 6.0,
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(
-                      "https://image.tmdb.org/t/p/w500/${item.posterPath}"),
-                  fit: BoxFit.cover),
+        child: SizedBox(
+          child: Padding(
+            padding: EdgeInsets.all(4.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4.0),
+              child: (item.posterPath != null)
+                  ? Image(
+                      image: NetworkImage(
+                          "https://image.tmdb.org/t/p/w185/${item.posterPath}"),
+                      fit: BoxFit.cover,
+                    )
+                  : Container(
+                      child: Icon(
+                        Icons.image,
+                        size: 64.0,
+                      ),
+                      color: Colors.grey[500],
+                    ),
             ),
           ),
         ),
