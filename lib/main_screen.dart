@@ -10,9 +10,9 @@ class MainScreen extends StatefulWidget {
   }
 }
 
-class MainScreenState extends State<MainScreen>
-    with AutomaticKeepAliveClientMixin {
+class MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
+  PageController _pageController;
   final List<Widget> _children = [
     MovieScreen(),
     SearchScreen(),
@@ -24,9 +24,21 @@ class MainScreenState extends State<MainScreen>
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _pageController =
+        PageController(initialPage: _currentIndex, keepPage: true);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: PageView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        onPageChanged: onTabTapped,
+        children: _children,
+      ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Colors.grey[900],
@@ -36,7 +48,9 @@ class MainScreenState extends State<MainScreen>
         ),
         child: BottomNavigationBar(
           fixedColor: Colors.white,
-          onTap: onTabTapped,
+          onTap: (index) {
+            this._pageController.jumpToPage(index);
+          },
           currentIndex: _currentIndex,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -62,7 +76,4 @@ class MainScreenState extends State<MainScreen>
       _currentIndex = index;
     });
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

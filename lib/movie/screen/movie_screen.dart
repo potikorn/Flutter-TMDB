@@ -32,6 +32,7 @@ class MovieScreenState extends State<MovieScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('Enter this again!@');
     nowPlaying = fetchNowPlayingMovies();
     popular = fetchPopularMovies();
     upcoming = fetchUpcomingMovies();
@@ -143,6 +144,7 @@ class MovieScreenState extends State<MovieScreen> {
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     );
     if (response.statusCode == 200) {
+      debugPrint("fetch again!");
       return MovieResponse.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load post ${response.statusCode}');
