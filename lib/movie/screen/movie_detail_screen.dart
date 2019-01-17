@@ -2,12 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_db/auth/login_screen.dart';
 import 'package:flutter_movie_db/dao/video_response.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuple/tuple.dart';
+
 import '../../widget/circular_icon.dart';
 import '../../widget/similar_and_trailer_view.dart';
 import '../../widget/top_backdrop.dart';
-
 import '../../dao/movie_response.dart';
 import '../../dao/credits_response.dart';
 
@@ -33,10 +36,15 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
   Future<MovieDetails> movieDetail;
   Future<VideoResponse> movieVideos;
   Future<CreditsResponse> credits;
+  Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  Future<bool> _isLogin;
 
   @override
   void initState() {
     super.initState();
+    _isLogin = prefs.then((SharedPreferences prefs) {
+      return (prefs.getBool('is_login') ?? false);
+    });
     similarMovies = fetchMovieSimilar();
     movieDetail = fetchMovieDetail();
     movieVideos = fetchMovieVideos();
@@ -61,62 +69,100 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  // FIXME Show when ready 
-                  // Container(
-                  //   margin: EdgeInsets.symmetric(vertical: 16.0),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: <Widget>[
-                  //       CircularIcon(
-                  //         icon: Icons.list,
-                  //         radius: 45.0,
-                  //       ),
-                  //       SizedBox(width: 10.0),
-                  //       CircularIcon(
-                  //         icon: Icons.favorite_border,
-                  //         radius: 45.0,
-                  //       ),
-                  //       SizedBox(width: 10.0),
-                  //       CircularIcon(
-                  //         icon: Icons.bookmark_border,
-                  //         radius: 45.0,
-                  //       ),
-                  //       SizedBox(width: 10.0),
-                  //       CircularIcon(
-                  //         icon: Icons.star_border,
-                  //         radius: 45.0,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                  RaisedButton(
+                    onPressed: () {
+                      _isLogin = prefs.then((p) {
+                        p.setBool('is_login', false);
+                        return false;
+                      });
+                    },
+                    child: Text('Dump Logout'),
+                  ),
+                  // FIXME Show when ready
                   Container(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    margin: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        FutureBuilder(
-                          future: movieDetail,
-                          builder:
-                              (context, AsyncSnapshot<MovieDetails> snapshot) {
-                            if (snapshot.hasData) {
-                              return _buildTitleAndOverview(snapshot.data);
-                            } else {
-                              return Container(width: 0.0, height: 0.0);
-                            }
-                          },
+                        CircularIcon(
+                          icon: Icons.list,
+                          radius: 45.0,
                         ),
-                        FutureBuilder(
-                          future: credits,
-                          builder: (context,
-                              AsyncSnapshot<CreditsResponse> snapshot) {
-                            if (snapshot.hasData) {
-                              return _buildCastsAndCrewSection(snapshot.data);
-                            } else {
-                              return Container(width: 0.0, height: 0.0);
-                            }
+                        SizedBox(width: 10.0),
+                        CircularIcon(
+                          icon: Icons.favorite_border,
+                          radius: 45.0,
+                        ),
+                        SizedBox(width: 10.0),
+                        GestureDetector(
+                          onTap: () {
+                            _isLogin.then((onValue) {
+                              if (!onValue) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        'Authentication',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      content: Text(
+                                        'Must Login first!',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text('Close'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            _navigateToAuthScreen();
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            });
                           },
+                          child: CircularIcon(
+                            icon: Icons.bookmark_border,
+                            radius: 45.0,
+                          ),
+                        ),
+                        SizedBox(width: 10.0),
+                        CircularIcon(
+                          icon: Icons.star_border,
+                          radius: 45.0,
                         ),
                       ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: FutureBuilder(
+                      future: Future.wait([movieDetail, credits])
+                          .then((response) => Tuple2(response[0], response[1])),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Center(child: Icon(Icons.sync_problem));
+                          case ConnectionState.waiting:
+                            return Center(child: CircularProgressIndicator());
+                          case ConnectionState.active:
+                          case ConnectionState.done:
+                            if (snapshot.hasData) {
+                              var movieDetails = snapshot.data.item1;
+                              var credits = snapshot.data.item2;
+                              return Column(
+                                children: <Widget>[
+                                  _buildTitleAndOverview(movieDetails),
+                                  _buildCastsAndCrewSection(credits)
+                                ],
+                              );
+                            }
+                        }
+                      },
                     ),
                   ),
                   SimilarAndTrailerTabView(
@@ -130,6 +176,18 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
         ),
       ),
     );
+  }
+
+  _navigateToAuthScreen() async {
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
+      ),
+    );
+    _isLogin = _isLogin.then((onValue) {
+      print(result.toString());
+      return result;
+    });
   }
 
   Widget _buildTitleAndOverview(MovieDetails details) {
