@@ -28,7 +28,7 @@ class PosterView extends StatelessWidget {
               child: (item.posterPath != null)
                   ? Image(
                       image: NetworkImage(
-                          "https://image.tmdb.org/t/p/w185/${item.posterPath}"),
+                          "https://image.tmdb.org/t/p/w185${item.posterPath}"),
                       fit: BoxFit.cover,
                     )
                   : Container(

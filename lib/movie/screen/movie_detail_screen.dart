@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/auth/login_screen.dart';
+import 'package:flutter_movie_db/auth/main_auth.dart';
 import 'package:flutter_movie_db/dao/video_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,13 +38,13 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
   Future<VideoResponse> movieVideos;
   Future<CreditsResponse> credits;
   Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-  Future<bool> _isLogin;
+  bool _isLogin;
 
   @override
   void initState() {
     super.initState();
-    _isLogin = prefs.then((SharedPreferences prefs) {
-      return (prefs.getBool('is_login') ?? false);
+    prefs.then((SharedPreferences prefs) {
+      _isLogin = (prefs.getBool('is_login') ?? false);
     });
     similarMovies = fetchMovieSimilar();
     movieDetail = fetchMovieDetail();
@@ -71,9 +72,9 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
                 [
                   RaisedButton(
                     onPressed: () {
-                      _isLogin = prefs.then((p) {
+                      prefs.then((p) {
                         p.setBool('is_login', false);
-                        return false;
+                        _isLogin = false;
                       });
                     },
                     child: Text('Dump Logout'),
@@ -94,41 +95,16 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
                           radius: 45.0,
                         ),
                         SizedBox(width: 10.0),
-                        GestureDetector(
+                        CircularIcon(
                           onTap: () {
-                            _isLogin.then((onValue) {
-                              if (!onValue) {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text(
-                                        'Authentication',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      content: Text(
-                                        'Must Login first!',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text('Close'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            _navigateToAuthScreen();
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  },
-                                );
-                              }
-                            });
+                            if (!_isLogin) {
+                              _buildUnauthorizedDialog();
+                            } else {
+                              // FIXME Plz I want to bookmark.
+                            }
                           },
-                          child: CircularIcon(
-                            icon: Icons.bookmark_border,
-                            radius: 45.0,
-                          ),
+                          icon: Icons.bookmark_border,
+                          radius: 45.0,
                         ),
                         SizedBox(width: 10.0),
                         CircularIcon(
@@ -184,10 +160,7 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
         builder: (context) => LoginScreen(),
       ),
     );
-    _isLogin = _isLogin.then((onValue) {
-      print(result.toString());
-      return result;
-    });
+    _isLogin = result ?? false;
   }
 
   Widget _buildTitleAndOverview(MovieDetails details) {
@@ -234,6 +207,42 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  _buildUnauthorizedDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Authentication',
+            style: TextStyle(color: Colors.black),
+          ),
+          content: Text(
+            'Must Login first!',
+            style: TextStyle(color: Colors.black),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text(
+                'Login Now!',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _navigateToAuthScreen();
+              },
+            )
+          ],
+        );
+      },
     );
   }
 
