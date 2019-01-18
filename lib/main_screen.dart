@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_db/user_profile_screen.dart';
 
 import 'movie/screen/movie_screen.dart';
 import 'package:flutter_movie_db/search_screen.dart';
@@ -16,11 +17,7 @@ class MainScreenState extends State<MainScreen> {
   final List<Widget> _children = [
     MovieScreen(),
     SearchScreen(),
-    Container(
-      child: Center(
-        child: Text('Settings'),
-      ),
-    ),
+    UserProfileScreen(),
   ];
 
   @override

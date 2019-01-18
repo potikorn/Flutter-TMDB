@@ -70,16 +70,6 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  RaisedButton(
-                    onPressed: () {
-                      prefs.then((p) {
-                        p.setBool('is_login', false);
-                        _isLogin = false;
-                      });
-                    },
-                    child: Text('Dump Logout'),
-                  ),
-                  // FIXME Show when ready
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 16.0),
                     child: Row(
