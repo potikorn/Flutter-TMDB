@@ -24,7 +24,6 @@ class _SearchScreenState extends State<SearchScreen> {
         children: <Widget>[
           SearchBox(
             onTextChangedListener: (text) {
-              debugPrint('Enter this again!');
               fetchSearchResult = fetchSearchQuery(text);
               setState(() {});
             },
@@ -36,9 +35,9 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildSearchResult() {
-    return FutureBuilder(
+    return FutureBuilder<MovieResponse>(
       future: fetchSearchResult,
-      builder: (BuildContext context, AsyncSnapshot<MovieResponse> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.movieDetails.isNotEmpty) {
             return _buildPosterGrid(
