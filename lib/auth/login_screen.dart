@@ -152,12 +152,22 @@ class LoginScreenState extends State<LoginScreen> {
       });
       requestLogin().then((onValue) {
         // print(onValue.data.toJson());
+        var authResponse = AuthResponse();
         prefs.then((prefs) {
           prefs.setBool('is_login', true);
           prefs.setString(USER_TOKEN, onValue.data.token);
           prefs.setString(NAME, onValue.data.name);
+          authResponse
+            ..token = onValue.data.token
+            ..name = onValue.data.name;
+          Navigator.pop(
+            _scaffoldContext,
+            AuthResponse(
+              token: authResponse.token,
+              name: authResponse.name,
+            ),
+          );
         });
-        Navigator.pop(_scaffoldContext, true);
       }).catchError((onError) {
         setState(() {
           _isLoading = false;

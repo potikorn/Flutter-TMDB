@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/auth/login_screen.dart';
 import 'package:flutter_movie_db/auth/main_auth.dart';
+import 'package:flutter_movie_db/dao/auth_response.dart';
 import 'package:flutter_movie_db/dao/video_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -145,12 +146,16 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
   }
 
   _navigateToAuthScreen() async {
-    final result = await Navigator.of(context).push(
+    final AuthResponse result = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => LoginScreen(),
       ),
     );
-    _isLogin = result ?? false;
+    if (result.token != null) {
+      _isLogin = true;
+    } else {
+      _isLogin = false;
+    }
   }
 
   Widget _buildTitleAndOverview(MovieDetails details) {
