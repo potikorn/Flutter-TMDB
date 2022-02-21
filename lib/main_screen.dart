@@ -52,15 +52,15 @@ class MainScreenState extends State<MainScreen> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: new Icon(Icons.home),
-              title: new Text('Home'),
+              label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.search),
-              title: new Text('Search'),
+              label: 'Search',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              title: Text('Profile'),
+              label: 'Profile',
             )
           ],
         ),

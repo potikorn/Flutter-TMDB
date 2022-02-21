@@ -36,7 +36,11 @@ MovieDetails _$MovieDetailsFromJson(Map<String, dynamic> json) {
       releaseDate: json['release_date'] as String,
       backDropPath: json['backdrop_path'] as String,
       popularity: (json['popularity'] as num)?.toDouble(),
-      runtime: json['runtime'] as int);
+      runtime: json['runtime'] as int)
+    ..genres = (json['genres'] as List)
+        ?.map(
+            (e) => e == null ? null : Genre.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$MovieDetailsToJson(MovieDetails instance) =>
@@ -49,5 +53,13 @@ Map<String, dynamic> _$MovieDetailsToJson(MovieDetails instance) =>
       'release_date': instance.releaseDate,
       'backdrop_path': instance.backDropPath,
       'popularity': instance.popularity,
-      'runtime': instance.runtime
+      'runtime': instance.runtime,
+      'genres': instance.genres
     };
+
+Genre _$GenreFromJson(Map<String, dynamic> json) {
+  return Genre(id: json['id'] as int, name: json['name'] as String);
+}
+
+Map<String, dynamic> _$GenreToJson(Genre instance) =>
+    <String, dynamic>{'id': instance.id, 'name': instance.name};

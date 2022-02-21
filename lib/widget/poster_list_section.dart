@@ -10,7 +10,6 @@ class PosterListSection extends StatelessWidget {
 
   PosterListSection({Key key, this.title, this.height, @required this.items})
       : super(key: key);
-  
 
   @override
   Widget build(BuildContext context) {

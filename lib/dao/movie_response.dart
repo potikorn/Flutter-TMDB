@@ -38,20 +38,31 @@ class MovieDetails extends Object {
   String backDropPath;
   double popularity;
   int runtime;
+  List<Genre> genres;
 
-  MovieDetails({
-    this.id,
-    this.title,
-    this.voteAverage,
-    this.posterPath,
-    this.overView,
-    this.releaseDate,
-    this.backDropPath,
-    this.popularity,
-    this.runtime
-  });
+  MovieDetails(
+      {this.id,
+      this.title,
+      this.voteAverage,
+      this.posterPath,
+      this.overView,
+      this.releaseDate,
+      this.backDropPath,
+      this.popularity,
+      this.runtime});
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) =>
       _$MovieDetailsFromJson(json);
   Map<String, dynamic> toJson() => _$MovieDetailsToJson(this);
+}
+
+@JsonSerializable()
+class Genre extends Object {
+  int id;
+  String name;
+
+  Genre({this.id, this.name});
+
+  factory Genre.fromJson(Map<String, dynamic> json) => _$GenreFromJson(json);
+  Map<String, dynamic> toJson() => _$GenreToJson(this);
 }

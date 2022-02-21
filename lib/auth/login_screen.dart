@@ -53,7 +53,7 @@ class LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 80.0),
                     Text(
                       'TMDB',
-                      style: Theme.of(context).textTheme.headline,
+                      style: Theme.of(context).textTheme.headline1,
                     ),
                     SizedBox(height: 32.0),
                     AccentColorOverride(
@@ -63,6 +63,7 @@ class LoginScreenState extends State<LoginScreen> {
                           if (value.isEmpty) {
                             return 'Please enter some text';
                           }
+                          return '';
                         },
                         controller: _usernameController,
                         decoration: InputDecoration(
