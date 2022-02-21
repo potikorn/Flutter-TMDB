@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/widget/poster_view.dart';
-import 'package:flutter_youtube/flutter_youtube.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../dao/movie_response.dart';
 import 'package:flutter_movie_db/dao/video_response.dart';
@@ -87,7 +87,7 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
           if (snapshot.data.movieDetails.isNotEmpty) {
             return _buildSimilarGrid(
                 snapshot.data.movieDetails.take(12).toList());
-          } else  {
+          } else {
             return Container(
               height: 200.0,
               child: Center(
@@ -136,7 +136,7 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
           aspectRatio: 16 / 9,
           child: GestureDetector(
             onTap: () {
-              _openYoutubeVideo(results[index].key);
+              // _openYoutubeVideo(results[index].key);
             },
             child: Card(
               child: Container(
@@ -152,18 +152,39 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
     );
   }
 
-  _openYoutubeVideo(String key) {
-    return FlutterYoutube.playYoutubeVideoById(
-        apiKey: "AIzaSyD2aa7VZe5y_W9KnByvUFzRAr5-VuePTng",
-        videoId: key,
-        autoPlay: true,
-        fullScreen: true);
-  }
+  // _openYoutubeVideo(String key) {
+  //   return FlutterYoutube.playYoutubeVideoById(
+  //       apiKey: "AIzaSyD2aa7VZe5y_W9KnByvUFzRAr5-VuePTng",
+  //       videoId: key,
+  //       autoPlay: true,
+  //       fullScreen: true);
+  // }
 
   void _onTabSelected(int currentTab) {
     if (_currentTab == currentTab) return;
     setState(() {
       _currentTab = currentTab;
     });
+  }
+}
+
+class YoutubePlayer extends StatelessWidget {
+  YoutubePlayer({Key key, @required this.videoId}) : super(key: key);
+
+  final String videoId;
+
+  YoutubePlayerController _controller = YoutubePlayerController(
+      initialVideoId: '5U9Q3UlO5gM',
+      params: YoutubePlayerParams(
+        showControls: true,
+        showFullscreenButton: true,
+      ));
+
+  @override
+  Widget build(BuildContext context) {
+    return YoutubePlayerIFrame(
+      controller: _controller,
+      aspectRatio: 16 / 9,
+    );
   }
 }
