@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_db/movie/screen/detail_screen.dart';
 
 import '../dao/movie_response.dart' show MovieDetails;
 
@@ -40,20 +41,31 @@ class PosterListSection extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       itemCount: items.length,
       itemBuilder: (BuildContext context, int index) {
-        return AspectRatio(
-          aspectRatio: 2 / 3,
-          child: Card(
-            // margin: EdgeInsets.all(8.0),
-            elevation: 6.0,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(
-                        "https://image.tmdb.org/t/p/w500/${items[index].posterPath}"),
-                    fit: BoxFit.cover),
+        return GestureDetector(
+          onTap: () {
+            print('enter this');
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailScreen(
+                          movieId: items[index].id,
+                        )));
+          },
+          child: AspectRatio(
+            aspectRatio: 2 / 3,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
               ),
-              child: Center(
-                child: Text('${items[index].title}'),
+              elevation: 6.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          "https://image.tmdb.org/t/p/w500/${items[index].posterPath}"),
+                      fit: BoxFit.cover),
+                ),
               ),
             ),
           ),

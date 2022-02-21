@@ -37,6 +37,7 @@ class MovieDetails extends Object {
   @JsonKey(name: 'backdrop_path')
   String backDropPath;
   double popularity;
+  List<Genre> genres;
 
   MovieDetails({
     this.id,
@@ -52,4 +53,15 @@ class MovieDetails extends Object {
   factory MovieDetails.fromJson(Map<String, dynamic> json) =>
       _$MovieDetailsFromJson(json);
   Map<String, dynamic> toJson() => _$MovieDetailsToJson(this);
+}
+
+@JsonSerializable()
+class Genre extends Object {
+  int id;
+  String name;
+
+  Genre({this.id, this.name});
+
+  factory Genre.fromJson(Map<String, dynamic> json) => _$GenreFromJson(json);
+  Map<String, dynamic> toJson() => _$GenreToJson(this);
 }
