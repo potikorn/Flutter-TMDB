@@ -14,7 +14,6 @@ class TopBackDrop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8.0),
       child: AspectRatio(
         aspectRatio: 4 / 3,
         child: Stack(

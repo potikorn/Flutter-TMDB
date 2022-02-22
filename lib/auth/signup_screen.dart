@@ -61,6 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         if (text.isEmpty) {
                           return 'This field must not empty';
                         }
+                        return '';
                       },
                     ),
                   ),
@@ -77,6 +78,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         if (text.isEmpty) {
                           return 'This field must not empty';
                         }
+                        return '';
                       },
                     ),
                   ),
@@ -94,6 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         if (text.isEmpty) {
                           return 'This field must not empty';
                         }
+                        return '';
                       },
                     ),
                   ),
@@ -111,6 +114,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         if (text.isEmpty) {
                           return 'This field must not empty';
                         }
+                        return '';
                       },
                     ),
                   ),

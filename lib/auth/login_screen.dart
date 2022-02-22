@@ -84,6 +84,7 @@ class LoginScreenState extends State<LoginScreen> {
                           if (value.isEmpty) {
                             return 'Please enter some text';
                           }
+                          return '';
                         },
                         obscureText: true,
                         controller: _passwordController,

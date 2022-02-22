@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/auth/login_screen.dart';
-import 'package:flutter_movie_db/auth/main_auth.dart';
 import 'package:flutter_movie_db/dao/auth_response.dart';
 import 'package:flutter_movie_db/dao/video_response.dart';
 import 'package:http/http.dart' as http;
@@ -56,91 +55,97 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              expandedHeight: 250.0,
-              floating: false,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                collapseMode: CollapseMode.parallax,
-                background: TopBackDrop(movieDetail: widget.data),
-              ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight: 250.0,
+            floating: false,
+            pinned: true,
+            iconTheme: IconThemeData(color: Colors.white),
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.grey[850],
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.parallax,
+              background: TopBackDrop(movieDetail: widget.data),
             ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircularIcon(
-                          icon: Icons.list,
-                          radius: 45.0,
-                        ),
-                        SizedBox(width: 10.0),
-                        CircularIcon(
-                          icon: Icons.favorite_border,
-                          radius: 45.0,
-                        ),
-                        SizedBox(width: 10.0),
-                        CircularIcon(
-                          onTap: () {
-                            if (!_isLogin) {
-                              _buildUnauthorizedDialog();
-                            } else {
-                              // FIXME Plz I want to bookmark.
-                            }
-                          },
-                          icon: Icons.bookmark_border,
-                          radius: 45.0,
-                        ),
-                        SizedBox(width: 10.0),
-                        CircularIcon(
-                          icon: Icons.star_border,
-                          radius: 45.0,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16.0),
-                    child: FutureBuilder(
-                      future: Future.wait([movieDetail, credits])
-                          .then((response) => Tuple2(response[0], response[1])),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                            return Center(child: Icon(Icons.sync_problem));
-                          case ConnectionState.waiting:
-                            return Center(child: CircularProgressIndicator());
-                          case ConnectionState.active:
-                          case ConnectionState.done:
-                            if (snapshot.hasData) {
-                              var movieDetails = snapshot.data.item1;
-                              var credits = snapshot.data.item2;
-                              return Column(
-                                children: <Widget>[
-                                  _buildTitleAndOverview(movieDetails),
-                                  _buildCastsAndCrewSection(credits)
-                                ],
-                              );
-                            }
-                        }
-                      },
-                    ),
-                  ),
-                  SimilarAndTrailerTabView(
-                    futureSimilarData: similarMovies,
-                    futureVideos: movieVideos,
-                  )
-                ],
-              ),
+            title: Text(
+              widget.data.title,
+              style: TextStyle(color: Colors.white),
             ),
-          ],
-        ),
+            centerTitle: true,
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularIcon(
+                        icon: Icons.list,
+                        radius: 45.0,
+                      ),
+                      SizedBox(width: 10.0),
+                      CircularIcon(
+                        icon: Icons.favorite_border,
+                        radius: 45.0,
+                      ),
+                      SizedBox(width: 10.0),
+                      CircularIcon(
+                        onTap: () {
+                          if (!_isLogin) {
+                            _buildUnauthorizedDialog();
+                          } else {
+                            // FIXME Plz I want to bookmark.
+                          }
+                        },
+                        icon: Icons.bookmark_border,
+                        radius: 45.0,
+                      ),
+                      SizedBox(width: 10.0),
+                      CircularIcon(
+                        icon: Icons.star_border,
+                        radius: 45.0,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FutureBuilder(
+                    future: Future.wait([movieDetail, credits])
+                        .then((response) => Tuple2(response[0], response[1])),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return Center(child: Icon(Icons.sync_problem));
+                        case ConnectionState.waiting:
+                          return Center(child: CircularProgressIndicator());
+                        case ConnectionState.active:
+                        case ConnectionState.done:
+                          if (snapshot.hasData) {
+                            var movieDetails = snapshot.data.item1;
+                            var credits = snapshot.data.item2;
+                            return Column(
+                              children: <Widget>[
+                                _buildTitleAndOverview(movieDetails),
+                                _buildCastsAndCrewSection(credits)
+                              ],
+                            );
+                          }
+                      }
+                    },
+                  ),
+                ),
+                SimilarAndTrailerTabView(
+                  futureSimilarData: similarMovies,
+                  futureVideos: movieVideos,
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -151,7 +156,7 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
         builder: (context) => LoginScreen(),
       ),
     );
-    if (result.token != null) {
+    if (result?.token != null) {
       _isLogin = true;
     } else {
       _isLogin = false;
@@ -219,13 +224,13 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
             style: TextStyle(color: Colors.black),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text(
                 'Login Now!',
                 style: TextStyle(color: Colors.red),

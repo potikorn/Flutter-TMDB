@@ -41,21 +41,19 @@ class MovieScreenState extends State<MovieScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                _buildNowplaying(nowPlaying),
-                _buildDataList('Popular', popular),
-                _buildDataList('Upcoming', upcoming),
-                _buildDataList('Top Rated', topRated),
-              ],
-            ),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              _buildNowplaying(nowPlaying),
+              _buildDataList('Popular', popular),
+              _buildDataList('Upcoming', upcoming),
+              _buildDataList('Top Rated', topRated),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

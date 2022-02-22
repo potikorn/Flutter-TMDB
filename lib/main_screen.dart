@@ -45,6 +45,7 @@ class MainScreenState extends State<MainScreen> {
         ),
         child: BottomNavigationBar(
           fixedColor: Colors.white,
+          unselectedItemColor: Colors.grey[500],
           onTap: (index) {
             this._pageController.jumpToPage(index);
           },

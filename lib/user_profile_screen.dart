@@ -31,7 +31,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: _isLogin
+        child: _isLogin ?? false
             ? ListView(
                 padding: const EdgeInsets.all(24.0),
                 children: <Widget>[
@@ -52,9 +52,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Center(
                     child: Text('Please Sign in!'),
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () {
-                      _navigateToAuthScreen();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('TODO: fix backend'),
+                          duration: Duration(milliseconds: 1000),
+                        ),
+                      );
+                      // FIXME please fix backend
+                      // _navigateToAuthScreen();
                     },
                     child: Text('Sign in plz.'),
                   ),
@@ -96,7 +103,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         builder: (context) => LoginScreen(),
       ),
     );
-    if (result.token != null) {
+    if (result?.token != null) {
       _isLogin = true;
       _authDao..name = result.name;
     } else {
@@ -118,13 +125,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             style: TextStyle(color: Colors.black),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('No'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text(
                 'Ok I\'m out!',
                 style: TextStyle(color: Colors.red),
