@@ -119,9 +119,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                   SizedBox(height: 32.0),
-                  RaisedButton(
-                    color: Colors.green,
-                    textColor: Colors.white,
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      textStyle: TextStyle(color: Colors.white),
+                    ),
                     onPressed: () {
                       var isValid = _formKey.currentState.validate();
                       if (isValid) {

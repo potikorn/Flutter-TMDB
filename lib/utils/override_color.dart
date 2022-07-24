@@ -14,8 +14,7 @@ class AccentColorOverride extends StatelessWidget {
       data: Theme.of(context).copyWith(
         primaryColor: color,
         hintColor: color,
-        accentColor: color,
-        cursorColor: color,
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: color),
       ),
     );
   }

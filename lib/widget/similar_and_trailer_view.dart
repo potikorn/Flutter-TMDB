@@ -168,8 +168,12 @@ class _SimilarAndTrailerTabViewState extends State<SimilarAndTrailerTabView> {
   }
 }
 
+// ignore: must_be_immutable
 class YoutubePlayer extends StatelessWidget {
-  YoutubePlayer({Key key, @required this.videoId}) : super(key: key);
+  YoutubePlayer({
+    Key key,
+    @required this.videoId,
+  }) : super(key: key);
 
   final String videoId;
 

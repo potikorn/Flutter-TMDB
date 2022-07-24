@@ -99,7 +99,7 @@ class LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(height: 16.0),
-                    RaisedButton(
+                    ElevatedButton(
                       onPressed: _loginAction,
                       child: Text('Login'),
                     ),
@@ -175,16 +175,15 @@ class LoginScreenState extends State<LoginScreen> {
           _isLoading = false;
         });
         debugPrint(onError.toString());
-        Scaffold.of(_scaffoldContext).showSnackBar(_snackbar);
+        ScaffoldMessenger.of(context).showSnackBar(_snackbar);
       });
     }
   }
 
   _navigateToSignupScreen() async {
-    final result = await Navigator.push(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SignupScreen()),
     );
-    // if (result) {}
   }
 }

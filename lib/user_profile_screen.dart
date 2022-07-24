@@ -97,6 +97,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
+  // ignore: unused_element
   _navigateToAuthScreen() async {
     final AuthResponse result = await Navigator.of(context).push(
       MaterialPageRoute(

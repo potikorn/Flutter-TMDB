@@ -120,8 +120,6 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
                           return Center(child: Icon(Icons.sync_problem));
-                        case ConnectionState.waiting:
-                          return Center(child: CircularProgressIndicator());
                         case ConnectionState.active:
                         case ConnectionState.done:
                           if (snapshot.hasData) {
@@ -134,6 +132,10 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
                               ],
                             );
                           }
+                          return Container();
+                        case ConnectionState.waiting:
+                        default:
+                          return Center(child: CircularProgressIndicator());
                       }
                     },
                   ),

@@ -67,14 +67,7 @@ class MovieScreenState extends State<MovieScreen> {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return Center(child: Icon(Icons.sync_problem));
-          case ConnectionState.waiting:
           case ConnectionState.active:
-            return Container(
-              height: 300,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
           case ConnectionState.done:
             if (snapshot.hasData) {
               final randomMovie = snapshot.data.movieDetails[randomNumber];
@@ -101,9 +94,16 @@ class MovieScreenState extends State<MovieScreen> {
                   ),
                 ],
               );
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
             }
+            return Text("${snapshot.error}");
+          case ConnectionState.waiting:
+          default:
+            return Container(
+              height: 300,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
         }
       },
     );
