@@ -126,7 +126,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   Future<BaseResponse<AuthResponse>> requestLogin() async {
     var response = await http.post(
-      "https://hapia.herokuapp.com/users/login",
+      Uri.parse("https://hapia.herokuapp.com/users/login"),
       body: {
         "username": _usernameController.text.trim(),
         "password": _passwordController.text.trim(),

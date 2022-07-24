@@ -154,7 +154,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future<bool> requestResigter() async {
     var response = await http.post(
-      "https://hapia.herokuapp.com/users/register",
+      Uri.parse("https://hapia.herokuapp.com/users/register"),
       body: {
         "name": _nameController.text.trim(),
         "username": _usernameController.text.trim(),
